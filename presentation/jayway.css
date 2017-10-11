@@ -1,0 +1,27 @@
+.remark-slide-content {
+    background-color: black;
+    color: silver;
+}
+
+table {
+    text-align: left
+}
+
+a {
+    color: turquoise;
+    text-decoration: none;
+}
+
+.hilite {
+    background-color: gold;
+    color: black;
+}
+
+.warn {
+    background-color: orange;
+    color:black;
+}
+
+img {
+    width: 90%;
+}
