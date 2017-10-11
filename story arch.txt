@@ -1,0 +1,39 @@
+1. New things - how do they relate to each-other?
+
+    * Standard, SDK, Core - what is this I don't even...
+
+    * Demos of new SDK and runtime
+
+        * dotnet new
+        
+            1. dotnet new: what do we get?
+                - show help you get from ommitting type
+                - show project files for C# console app
+
+            2. dotnet new: other templates
+                - show project files for F# class lib
+                - show project files for C# xunit tests
+                - create sln with console app, class lib and tests
+
+            3. dotnet new: installing and using 3rd party templates
+                - install giraffe template; dotnet new giraffe
+                - show project files (and explain what we're looking at)
+
+2. How do they relate to the old stuff?
+
+    * Demos of new-and-old together
+
+        * Using .NET Standard stuff in old projects
+            - Use Visual Studio, regular console app, install .NETStandard NuGet
+            - Add NETStandard class library to sln, add reference
+
+        * Using old stuff in .NET Standard projects
+            - Add old-skool class library, reference NETStandard library
+            - show build warning, explain why and how to suppress
+
+        * Using new SDK to build old stuff
+            - Convert old-skool class library to NETStandard
+            - change target framework
+            - 
+
+3. Summary
