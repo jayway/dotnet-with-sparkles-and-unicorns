@@ -14,6 +14,9 @@ My name is Tomas Lycken. I've met most of you, and the rest of you have
 probably seen my handle on Slack, or - at the very least - gotten a couple
 of emails about GitHub permissions lately...
 
+I've been at Jayway for about two and a half years, working with primarily
+web backends on .NET.
+
 I work with .NET, primarily backend but if I have to work with web frontend
 I prefer React, and I'm curious about TypeScript...
 
@@ -45,7 +48,7 @@ demos of various aspects of the new SDK and how you can start using it today.
 
 class: right, middle
 
-#So, what is the .NET Standard?
+#The .NET Standard
 
 ???
 
@@ -230,11 +233,17 @@ the new platform.
 
 class: middle, right
 
-# So, what is .NET Core?
+# .NET Core
 
 ???
 
 So, where does .NET Core fit into this analogy?
+
+Naming is hard, and Microsoft are bad at it. So, there are multiple things being
+referred to as ".NET Core", and it can be a little confusing. Therefore, let's
+focus first on one of the parts, and get to the others later:
+
+Let's talk about the .NET Core Runtime.
 
 ---
 
@@ -257,54 +266,47 @@ interface INetCoreApp20 : INetStandard20
 ???
 
 In this analogy, .NET Core is a platform implementation, just like .NET Framework,
-Mono or UWP.
+Mono or UWP. They aren't equal in the sense that they all support the same stuff,
+or (probably) in the sense that they get equal attention from Microsoft, but in
+terms of the Standard, they're actually equally important.
 
-There are currently three versions of the .NET Core runtime platform: 1.0, 1.1
-and 2.0.
+Let me say that again: in terms of the Standard, Mono and the full .NET Framework
+have equal merit and value. I think that's a pretty cool move by Microsoft.
+
+As you know, there are currently three versions of the .NET Core runtime platform:
+1.0, 1.1 and 2.0. In 2.0, *almost* all of the things that already existed in .NET
+Framework are included, so any platform supporting that (e.g. .NET Core 2.0) can
+run *almost* all applications written for .NET Framework 4.6.
 
 ---
 
-## Targeting the .NET Standard
+class: middle, right
 
-```c#
-public void Net45Application(INetFramework45 platform)
-{
-    platform.FileSystem();
-    platform.Console();
-
-    NetStandardLibrary13(platform);
-}
-
-public void NetStandardLibrary11(INetStandard11 platform)
-{
-    platform.FileSystem();
-    platform.Console();
-}
-```
+# Targeting the .NET Standard
 
 ???
 
-So, when you build your app - or library - you'll target one of the runtime platforms.
-
-If you want to use libraries targeting a specific version of the .NET Standard, you
-must ensure that the platform you've built your app for implements that version of the
-standard.
-
+So, how do you build software for the .NET Standard?
 
 ---
 
+
 ## Targeting the .NET Standard
 
+Applications target runtimes:
 ```c#
 public void Net45Application(INetFramework45 platform)
 {
     platform.FileSystem();
     platform.Console();
 
-    NetStandardLibrary13(platform);
+    NetStandardLibrary(platform);
 }
+```
 
-public void NetStandardLibrary13(INetStandard13 platform) // <-- note: it's now 1.3
+Libraries target the Standard:
+```c#
+public void NetStandardLibrary(INetStandard11 platform)
 {
     platform.FileSystem();
     platform.Console();
@@ -316,11 +318,55 @@ interface INetFramework45 : INetStandard11 { /*...*/ }
 
 ???
 
-So, with a library targeting a higher version of the standard than what your platform
-supports, you'll get errors.
+As a general rule, applications target runtimes, libraries target the standard.
 
-This example fails because we're targeting .NET 4.5, which implements version 1.1 of
-the standard, and we're trying to use a library that requires version 1.3.
+This way, when authoring a library, you can make sure that your library works on
+*any* runtime that supports the version of the Standard you're targeting. No more
+complicated portable class library configurations - just one build of the dll
+works on all platforms.
+
+But of course, if you're building an application and want to use libraries targeting
+a specific version of the .NET Standard, you must ensure that the platform you're
+building your app for implements that version of the standard.
+
+In this example, the library needs .NET Standard 1.1 and the application runs on
+.NET Framework 4.5. Since .NET Framework 4.5 implements .NET Standard 1.1, that works
+out fine.
+
+---
+
+## Targeting the .NET Standard
+
+Applications target runtimes:
+```c#
+public void Net45Application(INetFramework45 platform)
+{
+    platform.FileSystem();
+    platform.Console();
+
+    NetStandardLibrary(platform); // <-- ERROR
+}
+```
+
+Libraries target the Standard:
+```c#
+public void NetStandardLibrary(INetStandard13 platform) // <-- note: it's now 1.3
+{
+    platform.FileSystem();
+    platform.Console();
+}
+
+// reminder: .NET Framework 4.5 supports .NETStandard 1.1
+interface INetFramework45 : INetStandard11 { /*...*/ } 
+```
+
+???
+
+But what if the library author updates the library with some new stuff that requires
+the .NET Standard 1.3?
+
+With a library targeting a higher version of the standard than what your platform
+supports, you'll get errors.
 
 ---
 
@@ -357,7 +403,7 @@ For the full .NET Framework 4.5.1 application, we select the best compatible
 version of the library, which happens to be the one built for .NET 4.5.
 
 For the .NET Core application, we can't use a framework for .NET 4.5, but we *can*
-use one for .NET Standard 1.3, since the .NETCoreApp1.0 target supports .NET Standard
+use one for .NET Standard 1.3, since the .NETCoreApp1.0 target implements .NET Standard
 1.5, which is a superset of 1.3.
 
 ---
@@ -491,3 +537,38 @@ Another one:
 You're writing a library, that needs to support both the full .NET Framework and the UWP. Versions aren't so important, as long as they're actually released.
 
 The current release of UWP supports .NET Standard 1.4, so you can use that, but not 1.5 or above.
+
+---
+
+![baloo](/slides/images/baloo.png)
+
+???
+
+So, now I've taught you everything I know about the .NET Standard.
+
+Any questions so far?
+
+---
+
+class: middle, right
+
+# The .NET Core SDK
+
+???
+
+Let's talk about the new SDK.
+
+The SDK actually has a couple of different components, and several interfaces.
+You'll most likely use either Visual Studio integration (from VS2017, 15.3), or
+the `dotnet` CLI.
+
+And since it's easier to show off all the things you can do by actually doing them...
+---
+
+class: middle, center
+
+# Time for some ✨ and 🦄!
+
+???
+
+...it's demo time!
