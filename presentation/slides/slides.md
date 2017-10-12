@@ -87,14 +87,10 @@ and to figure out whether a particular runtime supports its needs.
 
 class: middle, center
 
-# ...
+# ...?
 ???
 
 But if you are like me, this isn't really enough to *grok* what the .NET Standard is. There has to be a better way to explain it, right?
---
-?
-
-???
 
 David Fowler on the ASP.NET Core team found a way that I think is way
 superior to anything else I've seen. It's brilliant mainly because it talks
@@ -107,7 +103,7 @@ Source: https://gist.github.com/davidfowl/8939f305567e1755412d6dc0b8baf1b7
 ## The .NET Standard defines available APIs
 
 ```c#
-interface INetStandard10 // .NET Standard 1.0
+interface INetStandard10
 {
     void Primitives();
     void Reflection();
@@ -116,7 +112,7 @@ interface INetStandard10 // .NET Standard 1.0
     void Linq();
 }
 
-interface INetStandard11 : INetStandard10 // 1.1
+interface INetStandard11 : INetStandard10
 {
     void ConcurrentCollections();
     void InteropServices();
@@ -124,7 +120,7 @@ interface INetStandard11 : INetStandard10 // 1.1
 
 // ...and so on until
 
-interface INetStandard20 : INetStandard16 // 2.0
+interface INetStandard20 : INetStandard16
 {
     // lots of stuff
 }
@@ -132,9 +128,9 @@ interface INetStandard20 : INetStandard16 // 2.0
 
 ???
 
-So, we can see the .NET Standard as a set of interfaces. The classes that
-eventually implement these interfaces are *.NET Platforms*, on which you
-can run your applications.
+So, we can see the .NET Standard as a set of interfaces, defining APIs that should
+be available for a given runtime to meet the standard. The classes that eventually
+implement these interfaces are *.NET Platforms*, on which you can run your applications.
 
 
 ---
@@ -142,7 +138,7 @@ can run your applications.
 ## Full .NET Framework implements the standard
 
 ```c#
-interface INetFramework45 : INetStandard11 // .NET Framework 4.5
+interface INetFramework45 : INetStandard11
 {
     void FileSystem();
     void Console();
@@ -180,7 +176,7 @@ in the standard, so lets create interfaces for the platforms as well.
 ## Other platforms also implement the standard
 
 ```c#
-interface IMono43 : INetFramework46 // Mono
+interface IMono43 : INetFramework46
 {
     void MonoSpecificApi();
 }
@@ -191,12 +187,12 @@ interface IWindowsUniversalPlatform : INetStandard14 // Windows Universal Platfo
     void Xaml();
 }
 
-interface IXamarinIOS : INetStandard15 // Xamarin.IOS
+interface IXamarinIOS : INetStandard15
 {
     void AppleAPIs();
 }
 
-interface IXamarinAndroid : INetStandard15 // Xamarin.Android
+interface IXamarinAndroid : INetStandard15
 {
     void GoogleAPIs();
 }
@@ -273,23 +269,17 @@ and 2.0.
 ```c#
 public void Net45Application(INetFramework45 platform)
 {
-    // .NET Framework 4.5 has access to all .NET Framework APIs
     platform.FileSystem();
     platform.Console();
 
-    // This fails because .NET Framework 4.5 does not implement .NET Standard 1.3
-    // Argument 1: cannot convert from 'Analogy.INetFramework45' to 'Analogy.INetStandard13'
     NetStandardLibrary13(platform);
 }
 
-public void NetStandardLibrary13(INetStandard13 platform)
+public void NetStandardLibrary11(INetStandard11 platform)
 {
     platform.FileSystem();
     platform.Console();
 }
-
-// reminder:
-interface INetFramework45 : INetStandard11 // .NET Framework 4.5
 ```
 
 ???
@@ -299,6 +289,35 @@ So, when you build your app - or library - you'll target one of the runtime plat
 If you want to use libraries targeting a specific version of the .NET Standard, you
 must ensure that the platform you've built your app for implements that version of the
 standard.
+
+
+---
+
+## Targeting the .NET Standard
+
+```c#
+public void Net45Application(INetFramework45 platform)
+{
+    platform.FileSystem();
+    platform.Console();
+
+    NetStandardLibrary13(platform);
+}
+
+public void NetStandardLibrary13(INetStandard13 platform) // <-- note: it's now 1.3
+{
+    platform.FileSystem();
+    platform.Console();
+}
+
+// reminder: .NET Framework 4.5 supports .NETStandard 1.1
+interface INetFramework45 : INetStandard11 { /*...*/ } 
+```
+
+???
+
+So, with a library targeting a higher version of the standard than what your platform
+supports, you'll get errors.
 
 This example fails because we're targeting .NET 4.5, which implements version 1.1 of
 the standard, and we're trying to use a library that requires version 1.3.
@@ -332,7 +351,7 @@ public void MultipleTargetsLibrary(INetStandard13 platform)
 ???
 
 Here we have two applications that depend on a library, and the library is built
-for multiple targets.
+for multiple targets. (I'll demo later how you build a library to support this.)
 
 For the full .NET Framework 4.5.1 application, we select the best compatible
 version of the library, which happens to be the one built for .NET 4.5.
