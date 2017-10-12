@@ -4,4 +4,14 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Inflector.NetStandard" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Inflector">
+      <HintPath>..\packages\Inflector.NetStandard.1.2.0\lib\netstandard1.3\Inflector.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

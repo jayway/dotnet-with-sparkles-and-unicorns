@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassLibrary.NetStandard;
+using System;
 
 namespace ConsoleApp.NetFramework
 {
@@ -6,7 +7,7 @@ namespace ConsoleApp.NetFramework
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("hello");
+            Console.WriteLine(new Pluralizer().Pluralize("entity"));
         }
     }
 }
