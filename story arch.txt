@@ -19,6 +19,14 @@
                 - install giraffe template; dotnet new giraffe
                 - show project files (and explain what we're looking at)
 
+        * dotnet workflow
+
+            - dotnet add/remove/restore
+
+            - dotnet build/run/test/watch
+
+            - dotnet pack/publish
+
 2. How do they relate to the old stuff?
 
     * Demos of new-and-old together
