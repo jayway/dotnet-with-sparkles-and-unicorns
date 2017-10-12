@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp.NetFramework", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary.NetStandard", "ClassLibrary.NetStandard\ClassLibrary.NetStandard.csproj", "{01B9D531-7117-46D3-8362-EE28432B3C1B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary.NetFramework", "ClassLibrary.NetFramework\ClassLibrary.NetFramework.csproj", "{A517ED72-D1D0-4B5F-8C6F-70C899AD537D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary.NetCoreSDK", "ClassLibrary.NetCoreSDK\ClassLibrary.NetCoreSDK.csproj", "{9C4DC670-91AF-46F0-A0BC-D294AAD7638A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{01B9D531-7117-46D3-8362-EE28432B3C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01B9D531-7117-46D3-8362-EE28432B3C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01B9D531-7117-46D3-8362-EE28432B3C1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A517ED72-D1D0-4B5F-8C6F-70C899AD537D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A517ED72-D1D0-4B5F-8C6F-70C899AD537D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A517ED72-D1D0-4B5F-8C6F-70C899AD537D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A517ED72-D1D0-4B5F-8C6F-70C899AD537D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C4DC670-91AF-46F0-A0BC-D294AAD7638A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C4DC670-91AF-46F0-A0BC-D294AAD7638A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C4DC670-91AF-46F0-A0BC-D294AAD7638A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C4DC670-91AF-46F0-A0BC-D294AAD7638A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
